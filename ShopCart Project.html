@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopCart | Ultimate Indian E-Commerce Mega Store</title>
+    <style>
+        :root {
+            --primary: #0f172a;
+            --accent: #0284c7;
+            --accent-light: #e0f2fe;
+            --bg-light: #f8fafc;
+            --text-main: #334155;
+            --success: #16a34a;
+            --sale-color: #dc2626;
+            --festive-gold: #f59e0b;
+            --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; scroll-behavior: smooth; }
+        body { background-color: var(--bg-light); color: var(--text-main); overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; }
+
+        /* Festive Ambient Animations */
+        .festive-lights {
+            background: #000;
+            height: 12px;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            padding: 2px 0;
+            overflow: hidden;
+        }
+        .light-bulb {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: glow 1s infinite alternate;
+        }
+        .light-bulb:nth-child(4n+1) { background: #ef4444; animation-delay: 0s; }
+        .light-bulb:nth-child(4n+2) { background: #3b82f6; animation-delay: 0.25s; }
+        .light-bulb:nth-child(4n+3) { background: #10b981; animation-delay: 0.5s; }
+        .light-bulb:nth-child(4n+4) { background: var(--festive-gold); animation-delay: 0.75s; }
+
+        @keyframes glow {
+            0% { opacity: 0.3; transform: scale(0.8); box-shadow: 0 0 0px transparent; }
+            100% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 8px currentColor; }
+        }
+
+        /* Header Navigation */
+        header {
+            background-color: var(--primary); color: #fff; padding: 0.5rem 5%;
+            position: sticky; top: 0; z-index: 1000;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            height: 90px;
+        }
+        
+        /* Adjusted Logo Container for Perfect 16:9 Display Bounds */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            height: 100%;
+            width: 140px;
+            padding: 4px 0;
+        }
+        .brand-logo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 4px;
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+        .logo-container:hover .brand-logo {
+            transform: scale(1.04);
+            filter: brightness(1.05) drop-shadow(0 0 8px rgba(56, 189, 248, 0.4));
+        }
+        
+        nav ul { display: flex; list-style: none; align-items: center; gap: 1.2rem; }
+        nav ul li a { font-weight: 500; transition: color 0.2s; font-size: 0.95rem; }
+        nav ul li a:hover { color: #38bdf8; }
+
+        .btn-auth-nav {
+            background: transparent; border: 2px solid #38bdf8; color: #38bdf8;
+            padding: 0.4rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;
+            transition: all 0.2s; white-space: nowrap;
+        }
+        .btn-auth-nav:hover { background: #38bdf8; color: var(--primary); }
+
+        .cart-icon {
+            position: relative; background: #1e293b; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; transition: background 0.2s; white-space: nowrap; font-size: 0.95rem;
+        }
+        .cart-icon:hover { background: #334155; }
+        .cart-count {
+            background: #ef4444; color: white; border-radius: 50%;
+            padding: 0.2rem 0.5rem; font-size: 0.75rem; position: absolute; top: -8px; right: -8px;
+        }
+
+        /* Hero Banner */
+        .hero {
+            background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.75)), url('https://images.unsplash.com/photo-1472851294608-062f824d296e?auto=format&fit=crop&w=1500&q=80') no-repeat center center/cover;
+            height: 300px; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; padding: 0 1rem;
+            position: relative;
+        }
+        .hero h1 { font-size: 3rem; margin-bottom: 0.8rem; font-weight: 800; }
+        .hero h1 span { color: var(--festive-gold); }
+        .hero p { font-size: 1.1rem; max-width: 700px; color: #94a3b8; margin-bottom: 2rem; }
+
+        /* Animated Video Advertisement Section */
+        .video-ad-section {
+            max-width: 1368px; margin: 2rem auto 0 auto; padding: 0 1rem;
+        }
+        .video-ad-wrapper {
+            position: relative; width: 100%; height: 320px; border-radius: 16px; overflow: hidden;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.15); background-color: #000;
+        }
+        .video-ad-wrapper video {
+            width: 100%; height: 100%; object-fit: cover; pointer-events: none;
+        }
+        .video-ad-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(90deg, rgba(15,23,42,0.9) 0%, rgba(15,23,42,0.4) 60%, rgba(15,23,42,0.1) 100%);
+            display: flex; flex-direction: column; justify-content: center; padding: 0 3.5rem; color: #ffffff;
+            z-index: 2;
+        }
+        .ad-live-badge {
+            align-self: flex-start; background-color: var(--sale-color); color: #fff; font-size: 0.75rem;
+            font-weight: 800; padding: 0.3rem 0.75rem; border-radius: 4px; text-transform: uppercase;
+            letter-spacing: 1px; margin-bottom: 1rem; animation: pulse 1.5s infinite;
+        }
+        .video-ad-overlay h2 {
+            font-size: 2.25rem; font-weight: 800; margin-bottom: 0.5rem; line-height: 1.2;
+        }
+        .video-ad-overlay h2 span { color: #38bdf8; }
+        .video-ad-overlay p {
+            max-width: 520px; font-size: 1rem; color: #cbd5e1; margin-bottom: 1.5rem; line-height: 1.5;
+        }
+        .btn-ad-action {
+            align-self: flex-start; background-color: var(--festive-gold); color: var(--primary);
+            font-weight: 700; padding: 0.75rem 1.75rem; border: none; border-radius: 8px; cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .btn-ad-action:hover {
+            transform: translateY(-2px); background-color: #e08e0b;
+        }
+        .video-controls-bar {
+            position: absolute; bottom: 1.5rem; right: 2rem; z-index: 3; display: flex; gap: 0.75rem;
+        }
+        .btn-video-ctrl {
+            background-color: rgba(255,255,255,0.2); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.3);
+            color: #fff; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; cursor: pointer; font-size: 1.1rem; transition: background-color 0.2s;
+        }
+        .btn-video-ctrl:hover { background-color: rgba(255,255,255,0.35); }
+
+        @media(max-width: 768px) {
+            .video-ad-wrapper { height: 260px; }
+            .video-ad-overlay { padding: 0 1.5rem; justify-content: flex-end; padding-bottom: 3.5rem; }
+            .video-ad-overlay h2 { font-size: 1.5rem; }
+            .video-ad-overlay p { display: none; }
+        }
+
+        /* Categorized Framework */
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem 1rem; }
+        
+        .cat-nav-strip {
+            display: flex; gap: 1rem; overflow-x: auto; padding: 1rem 0; margin-bottom: 2rem; border-bottom: 1px solid #e2e8f0;
+        }
+        .cat-nav-strip::-webkit-scrollbar { height: 4px; }
+        .cat-nav-strip::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        
+        .cat-chip {
+            background: white; border: 1px solid #cbd5e1; padding: 0.6rem 1.5rem; border-radius: 25px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.2s;
+        }
+        .cat-chip:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+        .cat-chip.sale-chip { border-color: var(--sale-color); color: var(--sale-color); font-weight: 800; }
+
+        .category-block { margin-bottom: 4rem; scroll-margin-top: 120px; }
+        .category-title { font-size: 2rem; font-weight: 800; color: var(--primary); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .category-title span { color: #64748b; font-size: 1.1rem; font-weight: 400; }
+        
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 2rem; }
+
+        /* Product Cards */
+        .product-card {
+            background: white; border-radius: 12px; overflow: hidden; box-shadow: var(--card-shadow);
+            border: 1px solid #f1f5f9; display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+        }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 12px 20px -5px rgb(0 0 0 / 0.15); }
+        .img-wrapper { position: relative; width: 100%; height: 220px; background: #ffffff; overflow: hidden; }
+        .product-image { width: 100%; height: 100%; object-fit: contain; padding: 1rem; transition: transform 0.3s; }
+        .product-card:hover .product-image { transform: scale(1.05); }
+        
+        .badge-tag { position: absolute; top: 10px; left: 10px; background: var(--primary); color: white; padding: 0.25rem 0.6rem; font-size: 0.75rem; font-weight: bold; border-radius: 4px; z-index: 10; }
+        .badge-tag.sale-badge { background: var(--sale-color); animation: pulse 1.5s infinite; }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .product-details { padding: 1.25rem; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .product-brand { font-size: 0.75rem; text-transform: uppercase; tracking: 1px; color: #64748b; font-weight: 700; margin-bottom: 0.25rem; }
+        .product-name { font-size: 1rem; font-weight: 700; color: var(--primary); line-height: 1.4; margin-bottom: 0.5rem; min-height: 44px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .product-desc { font-size: 0.85rem; color: #64748b; margin-bottom: 1rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 36px; }
+        
+        .product-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+        .price-container { display: flex; flex-direction: column; }
+        .product-price { font-size: 1.3rem; color: var(--success); font-weight: 800; }
+        .product-card.on-sale .product-price { color: var(--sale-color); }
+        .mr-strike { font-size: 0.85rem; color: #94a3b8; text-decoration: line-through; }
+        
+        .btn-add {
+            background-color: var(--accent); color: white; padding: 0.6rem 1.2rem; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; transition: 0.2s;
+        }
+        .btn-add:hover { background-color: #025a87; }
+        .btn-delete-admin {
+            background-color: var(--sale-color); color: white; padding: 0.4rem 0.8rem; border: none; border-radius: 4px; font-size: 0.8rem; font-weight: bold; cursor: pointer; margin-top: 0.5rem; width: 100%; transition: background 0.2s;
+        }
+        .btn-delete-admin:hover { background-color: #991b1b; }
+
+        /* Slide-out Drawer Panel */
+        .cart-drawer {
+            position: fixed; top: 0; right: -450px; width: 100%; max-width: 450px; height: 100%;
+            background: white; box-shadow: -5px 0 25px rgba(0,0,0,0.15); z-index: 3000;
+            display: flex; flex-direction: column; transition: right 0.3s ease;
+        }
+        .cart-drawer.active { right: 0; }
+        .cart-header { padding: 1.5rem; background: var(--primary); color: white; display: flex; justify-content: space-between; align-items: center; }
+        .cart-header h2 { font-size: 1.3rem; font-weight: 700; }
+        .close-cart { font-size: 1.8rem; cursor: pointer; color: #94a3b8; transition: color 0.2s; }
+        .close-cart:hover { color: white; }
+        
+        .cart-body { flex-grow: 1; padding: 1.5rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1rem; }
+        .cart-empty-msg { text-align: center; color: #64748b; margin-top: 3rem; font-weight: 500; }
+        
+        .cart-item { display: flex; gap: 1rem; background: #f8fafc; padding: 0.75rem; border-radius: 8px; border: 1px solid #e2e8f0; align-items: center; }
+        .cart-item-img { width: 60px; height: 60px; object-fit: contain; background: white; border-radius: 4px; padding: 0.25rem; }
+        .cart-item-details { flex-grow: 1; }
+        .cart-item-name { font-size: 0.9rem; font-weight: 700; color: var(--primary); display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+        .cart-item-price { font-size: 0.9rem; color: var(--success); font-weight: 700; margin-top: 0.25rem; }
+        
+        .cart-item-actions { display: flex; align-items: center; gap: 0.5rem; }
+        .qty-btn { background: #cbd5e1; border: none; width: 24px; height: 24px; border-radius: 4px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .qty-btn:hover { background: #94a3b8; }
+        .item-qty-val { font-size: 0.9rem; font-weight: 600; min-width: 20px; text-align: center; }
+        .remove-item { color: #ef4444; border: none; background: transparent; cursor: pointer; font-size: 0.8rem; margin-left: 0.5rem; font-weight: 600; }
+        .remove-item:hover { text-decoration: underline; }
+
+        .cart-footer { padding: 1.5rem; border-top: 1px solid #e2e8f0; background: #f8fafc; }
+        .summary-row { display: flex; justify-content: space-between; font-weight: 700; font-size: 1.1rem; margin-bottom: 1rem; color: var(--primary); }
+        .btn-checkout { width: 100%; background: var(--success); color: white; border: none; padding: 0.9rem; border-radius: 6px; font-weight: bold; font-size: 1rem; cursor: pointer; text-align: center; transition: background 0.2s; }
+        .btn-checkout:hover { background: #15803d; }
+
+        /* Overlays & Modals */
+        .global-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6);
+            opacity: 0; pointer-events: none; transition: 0.3s; z-index: 1500;
+        }
+        .global-overlay.active { opacity: 1; pointer-events: auto; }
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6);
+            display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.3s; z-index: 2000;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-box { background: white; padding: 2rem; border-radius: 12px; width: 100%; max-width: 500px; position: relative; max-height: 90vh; overflow-y: auto; }
+        .close-modal { position: absolute; top: 1rem; right: 1.2rem; font-size: 1.5rem; cursor: pointer; color: #94a3b8; z-index: 10; }
+        
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; margin-bottom: 0.4rem; font-size: 0.85rem; font-weight: 600; color: var(--primary); }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 0.75rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.9rem; }
+        .form-group textarea { resize: none; height: 70px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        
+        .modal-submit { width: 100%; background: var(--accent); color: white; padding: 0.75rem; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 0.5rem; transition: background 0.2s; }
+        .modal-submit:hover { background: #026ca3; }
+        .modal-submit.success-btn { background: var(--success); }
+        .modal-submit.success-btn:hover { background: #15803d; }
+
+        /* Auth Tabs Structure */
+        .auth-tabs { display: flex; border-bottom: 2px solid #e2e8f0; margin-bottom: 1.5rem; gap: 1rem; }
+        .auth-tab { flex: 1; text-align: center; padding: 0.75rem; font-weight: 700; color: #94a3b8; cursor: pointer; transition: all 0.2s; }
+        .auth-tab.active { color: var(--accent); border-bottom: 2px solid var(--accent); }
+        .auth-form-view { display: none; }
+        .auth-form-view.active { display: block; }
+
+        /* Dynamic Working Admin Workspace Styling */
+        .admin-dashboard-panel {
+            background: white; border: 2px dashed #0284c7; border-radius: 12px; padding: 2rem; margin-bottom: 3rem; display: none; box-shadow: var(--card-shadow);
+        }
+        .admin-dashboard-panel.visible { display: block; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem; }
+        .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+        @media(max-width: 768px) { .admin-grid { grid-template-columns: 1fr; } }
+        .admin-card-box { background: #f8fafc; border: 1px solid #e2e8f0; padding: 1.25rem; border-radius: 8px; }
+        .order-log-item { background: white; border: 1px solid #cbd5e1; padding: 0.75rem; border-radius: 6px; margin-bottom: 0.5rem; font-size: 0.85rem; }
+
+        footer { background: var(--primary); color: #64748b; text-align: center; padding: 3rem 1rem; margin-top: 6rem; border-top: 4px solid var(--accent); }
+        footer p { color: #94a3b8; margin-bottom: 0.5rem; }
+        .footer-credits { font-size: 1rem; font-weight: 600; color: #38bdf8 !important; margin-top: 1rem; }
+    </style>
+</head>
+<body>
+
+    <div class="festive-lights">
+        <div class="light-bulb"></div><div class="light-bulb"></div><div class="light-bulb"></div><div class="light-bulb"></div>
+        <div class="light-bulb"></div><div class="light-bulb"></div><div class="light-bulb"></div><div class="light-bulb"></div>
+        <div class="light-bulb"></div><div class="light-bulb"></div><div class="light-bulb"></div><div class="light-bulb"></div>
+        <div class="light-bulb"></div><div class="light-bulb"></div><div class="light-bulb"></div><div class="light-bulb"></div>
+        <div class="light-bulb"></div><div class="light-bulb"></div><div class="light-bulb"></div><div class="light-bulb"></div>
+    </div>
+
+    <header>
+        <div class="logo-container" onclick="location.href='#'">
+            <!-- Embedded ShopCart Premium Native Logo Asset[cite: 1] -->
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAlgAAADWCAYAAADd12X9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAFd6SURBVHhe7Z0HgFTF1cfvu21sm122V5YiiqAgKoJdE40aNZoYE8s3xhhjjBqNJfaS2Ivae8eGiB0rKkVApC29w7K9bZvv3pnd79zZ2ff2vX0PCDPz/z8zu/PmvXnztv/ce8q9t2VjY2NJkkjGxsZa/EskSZJEMoUkSZIkUkySJEkixSRJkiSSTJEkSZJIMUmSJIkUkyRJkkgyhSRJkiSSTJEkSZJIMUmSJIkUkyRJkkgyhSRJkiSSTJEkSZJIMUmSJIkUkyRJkkgyhSRJkiSSTJEkSZJIMUmSJIkUkyRJkkgyhSRJkiSSTJEkyXg1lI2NjRV/pLhN2djYWEnKxsZGa/v27XLBBRfI66+/rvybJEkmKkmSJEkkk0iSJNm1YmNjc8TGyXn/9re/ySuvvCIPPPCA/OMf/5C77rpL9txzTxk+fLjMnTuX/5IkyUQmSZIku1asra0tG02E8vLLL8ubb74pDz/8sLz++utyxx13yCWXXCKnnnqqzJw5k/+SJMmEJkmSJOMhNjbWT2ycgE899VR58cUXpampSc4++2y56aabZMqUKfwnSZJMTJIkScY5NjbWW2ycsGeeeabccsstctFFF8nVV18tp59+upx66qkyderUCa8pSZJxRJIkyW5PbGysu9i4gX7xi1/IeeedJxdffLFMnjxZxo8fP+G9kiTJeCFJkuS2IjZWbFxM1m9+8xt58skn5dprr5Uzztg09T516lRZsGDBbs3Z/5Ak2a0lSXLsxsbGOovNYrLq6urknHPOMaHJZ8+ePUkymSRJkrGTJDm2YWxs7GBsFpN1yimnyO9+9zsZMmTIRP+NJEmyO0uSJDkyGz16dJPFLJ42bZo89dRT/CdJkiTjhyRJkqwXa2tri/jN8vLy/GdfX59MnTr1LsmDkiTJuCDJpCAbGzs1/t8tW7bIPP/Z2Gxsbex/bO/3n/rctW7bIPP/Z2Nj4W+3P92f/94yP7a+lpaVx8ODBxra2tpL851bX5H6s2D8yMpqamp4fPHjwW9XV1WtjY2NLx9oY8W/5v0iSJMkkN27RRxkfn4+Nja0da5uX9a3vOcb979t5+/P92P8eGxt7S27X6T3vW/a/9fT0rB0wYMDasbaDseV/NfXzsf20trY29vb2ro4kG93Y2NhVscVypEWSJEkmyf8D22dZ75k/Vd+z/Yjvsf/d/l9jY2MfY/uxvdP/vme92G/tP7b+49b38t8W/r1169afVFRU/LSpqenvbW1tb8XWxujY/l4kySR1wX/u+1s++P7WjY1v311VtbGxY/u0fR9127bH6P+W/8r9y/b5/lY9e/W6m3eW/Wdb9VvO/N3a2rrf0KFDfx0bG1sbGxs7tKmpaaV1N+8t/z9jS9fFkiRJkiT/bWys2NhjN/z1lvy2cRtb/F5d9Zt2m4t6z3v+X7n9e4v7Nf9XkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkkwsYskgSZJkEkslQ0iSJDleIpUMIUmS5HiIVDKEJEmS4yFSyRCSJEmOhatedikgSZJkEkslQ0iSJDleIpUMIUmS5HiIVDKEJEmS4yFSyRCSJEmOh2Rjo2I7bY8vG73XF70+RkmSJEmSJMl4438BGq8zZ71L2tIAAAAASUVORK5CYII=" alt="ShopCart Mega Logo" class="brand-logo" onerror="this.style.display='none'; this.parentNode.innerText='ShopCart';">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#sale" style="color: #ef4444; font-weight: 800;">Mega Sale</a></li>
+                <li><a href="#mobiles">Smartphones</a></li>
+                <li><a href="#electronics">Electronics</a></li>
+                <li><a href="#fashion">Fashion</a></li>
+                <li><a href="#home">Home Essentials</a></li>
+                <li><button class="btn-auth-nav" id="authBtn">Sign In</button></li>
+                <li>
+                    <div class="cart-icon" id="cartToggleBtn">
+                        🛒 Cart Summary <span class="cart-count" id="cartBadge">0</span>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>The Mega <span>Festive Bash</span> Store</h1>
+        <p>Explore premium goods across verified household divisions. Immediate dispatches across India with absolute tracking parity.</p>
+    </section>
+
+    <!-- Animated Video Advertisement Banner -->
+    <section class="video-ad-section">
+        <div class="video-ad-wrapper">
+            <video id="promoVideo" autoplay loop muted playsinline>
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-fashion-woman-with-shopping-bags-walking-in-a-white-41655-large.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="video-ad-overlay">
+                <span class="ad-live-badge">Exclusive Offer</span>
+                <h2>Unbox the <span>Premium Lifestyle</span> Parity</h2>
+                <p>Enjoy free expedited shipping across metropolitan hubs, extended warranty architectures, and 10% instant savings ledger updates on all major premium credit lines.</p>
+                <button class="btn-ad-action" onclick="location.href='#sale'">Claim Offer Now</button>
+            </div>
+            <div class="video-controls-bar">
+                <button class="btn-video-ctrl" id="videoPlayPauseBtn" onclick="toggleVideoPlayback()">⏸</button>
+                <button class="btn-video-ctrl" id="videoMuteBtn" onclick="toggleVideoVolume()">🔇</button>
+            </div>
+        </div>
+    </section>
+
+    <main class="container">
+
+        <div id="adminPanel" class="admin-dashboard-panel">
+            <div class="admin-header">
+                <h2 style="color: var(--accent);">🛠️ Store Operational Control Panel (Admin Mode)</h2>
+                <button class="btn-auth-nav" style="border-color: var(--sale-color); color: var(--sale-color);" onclick="executeLogout()">Exit Admin Workspace</button>
+            </div>
+            <div class="admin-grid">
+                <div class="admin-card-box">
+                    <h3 style="margin-bottom: 1rem;">Add New Product Asset to Inventory</h3>
+                    <form id="adminAddProductForm">
+                        <div class="form-group">
+                            <label>Product Catalog Segment Division</label>
+                            <select id="admCat" required>
+                                <option value="sale">Festival Lightning Sale Deal</option>
+                                <option value="mobiles">Mobiles & Smartphones</option>
+                                <option value="electronics">Consumer Electronics</option>
+                                <option value="fashion">Apparel & Wardrobe</option>
+                                <option value="home">Kitchen & Furniture</option>
+                                <option value="grocery">Daily Essential Groceries</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Brand Name</label><input type="text" id="admBrand" required placeholder="Sony"></div>
+                            <div class="form-group"><label>Display Tag Label</label><input type="text" id="admTag" required placeholder="New Launch"></div>
+                        </div>
+                        <div class="form-group"><label>Product Title Name</label><input type="text" id="admName" required placeholder="Sony Ultra Spatial Earbuds"></div>
+                        <div class="form-group"><label>Short Catalog Summary Description</label><textarea id="admDesc" required placeholder="Premium high-fidelity audio engine."></textarea></div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Sale Price (₹)</label><input type="number" id="admPrice" required placeholder="4999"></div>
+                            <div class="form-group"><label>List Price Strike (₹)</label><input type="number" id="admOldPrice" required placeholder="9999"></div>
+                        </div>
+                        <div class="form-group"><label>Media Image Stock URL Asset</label><input type="url" id="admImg" required placeholder="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=400&q=80"></div>
+                        <button type="submit" class="modal-submit" style="background-color: var(--accent);">Inject Item to Storefront Catalog</button>
+                    </form>
+                </div>
+                
+                <div class="admin-card-box">
+                    <h3 style="margin-bottom: 1rem;">Dispatched Incoming Live Orders Pipeline</h3>
+                    <div id="adminOrdersFeed" style="max-height: 420px; overflow-y: auto;">
+                        <p style="color: #64748b; text-align: center; margin-top: 2rem;">No orders dispatched in this session logs yet.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cat-nav-strip">
+            <button class="cat-chip sale-chip" onclick="location.href='#sale'">🔥 Festival Lightning Sale</button>
+            <button class="cat-chip" onclick="location.href='#mobiles'">Mobiles & Smartphones</button>
+            <button class="cat-chip" onclick="location.href='#electronics'">Consumer Electronics</button>
+            <button class="cat-chip" onclick="location.href='#fashion'">Apparel & Wardrobe</button>
+            <button class="cat-chip" onclick="location.href='#home'">Kitchen & Furniture</button>
+            <button class="cat-chip" onclick="location.href='#grocery'">Daily Essential Groceries</button>
+        </div>
+
+        <div id="sale" class="category-block">
+            <h2 class="category-title" style="color: var(--sale-color);">🔥 Mega Festival Lightning Discounts <span>(Time Limited Deals)</span></h2>
+            <div class="product-grid" id="sale-grid"></div>
+        </div>
+
+        <div id="mobiles" class="category-block">
+            <h2 class="category-title">Mobiles & Smartphones <span>(Latest Flagship Generations)</span></h2>
+            <div class="product-grid" id="mobiles-grid"></div>
+        </div>
+
+        <div id="electronics" class="category-block">
+            <h2 class="category-title">Consumer Electronics <span>(Premium Tier Components)</span></h2>
+            <div class="product-grid" id="electronics-grid"></div>
+        </div>
+
+        <div id="fashion" class="category-block">
+            <h2 class="category-title">Apparel & Wardrobe <span>(Contemporary Fits)</span></h2>
+            <div class="product-grid" id="fashion-grid"></div>
+        </div>
+
+        <div id="home" class="category-block">
+            <h2 class="category-title">Kitchen & Furniture <span>(Artisan Configurations)</span></h2>
+            <div class="product-grid" id="home-grid"></div>
+        </div>
+
+        <div id="grocery" class="category-block">
+            <h2 class="category-title">Daily Essential Groceries <span>(Organic Foundations)</span></h2>
+            <div class="product-grid" id="grocery-grid"></div>
+        </div>
+    </main>
+
+    <div class="global-overlay" id="uiOverlay"></div>
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-header">
+            <h2>Your Shopping Cart</h2>
+            <span class="close-cart" id="closeCartBtn">&times;</span>
+        </div>
+        <div class="cart-body" id="cartDrawerBody"></div>
+        <div class="cart-footer">
+            <div class="summary-row">
+                <span>Estimated Total:</span>
+                <span id="cartSubtotal">₹0</span>
+            </div>
+            <button class="btn-checkout" onclick="openCheckoutModal()">Proceed to Secure Checkout</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="checkoutModal">
+        <div class="modal-box">
+            <span class="close-modal" id="closeCheckout">&times;</span>
+            <h2 style="margin-bottom: 1rem; color: var(--primary);">Delivery Details & Address</h2>
+            <form id="checkoutForm">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="shipName" required placeholder="">
+                </div>
+                <div class="form-group">
+                    <label>Mobile Number (10-digit)</label>
+                    <input type="tel" id="shipPhone" pattern="[6789][0-9]{9}" required placeholder="">
+                </div>
+                <div class="form-group">
+                    <label>Flat, House no., Building, Apartment</label>
+                    <input type="text" id="shipFlat" required placeholder="">
+                </div>
+                <div class="form-group">
+                    <label>Area, Street, Sector, Village</label>
+                    <textarea id="shipStreet" required placeholder=""></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Town/City</label><input type="text" id="shipCity" required placeholder=""></div>
+                    <div class="form-group"><label>State</label><input type="text" id="shipState" required placeholder=""></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>PIN Code (6 digits)</label><input type="text" id="shipPin" pattern="[1-9][0-9]{5}" required placeholder=""></div>
+                    <div class="form-group">
+                        <label>Payment Mode</label>
+                        <select id="paymentMethod" required>
+                            <option value="UPI">UPI / Instant NetBanking</option>
+                            <option value="Card">Credit / Debit Card</option>
+                            <option value="COD">Cash on Delivery (COD)</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="modal-submit success-btn">Place Your Order</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Switchable Multi-Tab Identity Gateway -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal-box">
+            <span class="close-modal" id="closeModal">&times;</span>
+            
+            <div class="auth-tabs">
+                <div class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">Sign In</div>
+                <div class="auth-tab" id="tabRegister" onclick="switchAuthTab('register')">Register Account</div>
+            </div>
+
+            <!-- Login View -->
+            <div id="loginFormView" class="auth-form-view active">
+                <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 1.5rem;">Use admin@shopcart.in for administrative controls</p>
+                <form id="authLoginForm">
+                    <div class="form-group">
+                        <label>Registered Email Address</label>
+                        <input type="email" id="loginEmail" required placeholder="user@domain.in">
+                    </div>
+                    <div class="form-group">
+                        <label>Secure Password Identity Token</label>
+                        <input type="password" id="loginPassword" required placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="modal-submit">Authenticate Account Profile</button>
+                </form>
+            </div>
+
+            <!-- Registration View -->
+            <div id="registerFormView" class="auth-form-view">
+                <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 1.5rem;">Create a fresh shopping identity profile ledger.</p>
+                <form id="authRegisterForm">
+                    <div class="form-group">
+                        <label>Profile Display Name</label>
+                        <input type="text" id="regName" required placeholder="sumit sheoran">
+                    </div>
+                    <div class="form-group">
+                        <label>Preferred Email Address</label>
+                        <input type="email" id="regEmail" required placeholder="sumit@domain.in">
+                    </div>
+                    <div class="form-group">
+                        <label>Configure Secure Password</label>
+                        <input type="password" id="regPassword" minlength="4" required placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="modal-submit" style="background-color: var(--success);">Register New Profile Asset</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ShopCart Consolidated Logistics Private Limited.</p>
+        <p>Operational Headquarters: </p>
+        <p class="footer-credits">Developed by: Sumit sheoran | Contact: sumitsheoran13385@gmail.com</p>
+    </footer>
+
+    <script>
+        // Inventory Database Layer
+        let inventoryDatabase = JSON.parse(localStorage.getItem('shopcart_inventory_v3')) || [
+            // ==================== FESTIVAL LIGHTNING SALE SPECIAL DEALS (25 Items) ====================
+            { id: 601, brand: "Apple", name: "Apple iPhone 16 (128 GB, Black)", price: 67999, oldPrice: 79900, tag: "15% OFF", cat: "sale", desc: "Get the latest iPhone 16 with A18 chip and advanced camera control.", img: "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?auto=format&fit=crop&w=400&q=80" },
+            { id: 602, brand: "Mi", name: "Xiaomi 20000mAh Power Bank (Fast Charging)", price: 1299, oldPrice: 2999, tag: "56% OFF", cat: "sale", desc: "Heavy duty power bank with 18W fast charging support.", img: "https://images.unsplash.com/photo-1609592424109-dd9892f1b177?auto=format&fit=crop&w=400&q=80" },
+            { id: 603, brand: "Fitbit", name: "Fitbit Pulse Smart Fitness Band", price: 1999, oldPrice: 4999, tag: "60% OFF", cat: "sale", desc: "Tracks your daily steps, heart rate, and sleep automatically.", img: "https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?auto=format&fit=crop&w=400&q=80" },
+            { id: 604, brand: "Sony", name: "Sony WH-1000XM4 Wireless Headphones", price: 17999, oldPrice: 24990, tag: "28% OFF", cat: "sale", desc: "Best-in-class active noise cancellation with 30 hours battery life.", img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=400&q=80" },
+            { id: 605, brand: "Samsung", name: "Samsung 55-inch 4K Ultra HD Smart TV", price: 36999, oldPrice: 54900, tag: "32% OFF", cat: "sale", desc: "Crystal 4K display with Netflix, Prime Video, and Hotstar support.", img: "https://images.unsplash.com/photo-1593305841991-05c297ba4575?auto=format&fit=crop&w=400&q=80" },
+            { id: 606, brand: "HP", name: "HP Pavilion Ryzen 5 Thin & Light Laptop", price: 43499, oldPrice: 59990, tag: "27% OFF", cat: "sale", desc: "8GB RAM, 512GB SSD, Windows 11, perfect for students and professionals.", img: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=400&q=80" },
+            { id: 607, brand: "OnePlus", name: "OnePlus Nord CE 4 Lite 5G (8GB RAM)", price: 16999, oldPrice: 19999, tag: "15% OFF", cat: "sale", desc: "Super bright AMOLED display with 5000mAh battery and 80W charging.", img: "https://images.unsplash.com/photo-1565630916779-e303be97b6f5?auto=format&fit=crop&w=400&q=80" },
+            { id: 608, brand: "Boat", name: "boAt Airdopes 141 True Wireless Earbuds", price: 899, oldPrice: 2990, tag: "70% OFF", cat: "sale", desc: "42 hours total playtime with ENx technology for clear voice calls.", img: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=400&q=80" },
+            { id: 609, brand: "Realme", name: "Realme Smart Air Purifier 4", price: 12999, oldPrice: 19999, tag: "35% OFF", cat: "sale", desc: "True HEPA filter removes 99.97% of air pollutants and dust particles.", img: "https://images.unsplash.com/photo-1585771724684-38269d6639fd?auto=format&fit=crop&w=400&q=80" },
+            { id: 610, brand: "Logitech", name: "Logitech MX Master 3S Wireless Mouse", price: 8499, oldPrice: 10995, tag: "22% OFF", cat: "sale", desc: "Ergonomic design with quiet clicks and hyper-fast scroll wheel.", img: "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?auto=format&fit=crop&w=400&q=80" },
+            { id: 611, brand: "Canon", name: "Canon EOS 1500D DSLR Camera Combo", price: 34999, oldPrice: 47995, tag: "27% OFF", cat: "sale", desc: "Includes EF-S 18-55mm lens, 24.1 MP sensor, and built-in Wi-Fi.", img: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=400&q=80" },
+            { id: 612, brand: "Philips", name: "Philips Digital Air Fryer (4.1 Litre)", price: 4999, oldPrice: 7995, tag: "37% OFF", cat: "sale", desc: "Cook healthy food with up to 90% less oil using Rapid Air technology.", img: "https://images.unsplash.com/photo-1621972750749-0fbb1abb7736?auto=format&fit=crop&w=400&q=80" },
+            { id: 613, brand: "Ecovacs", name: "Ecovacs Deebot Robotic Vacuum Cleaner", price: 18999, oldPrice: 39900, tag: "52% OFF", cat: "sale", desc: "Smart 2-in-1 mopping and vacuuming robot with app control.", img: "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?auto=format&fit=crop&w=400&q=80" },
+            { id: 614, brand: "Noise", name: "Noise ColorFit Pulse 4 Smartwatch", price: 1199, oldPrice: 4999, tag: "76% OFF", cat: "sale", desc: "Big display with Bluetooth calling, heart rate tracker, and sports modes.", img: "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&w=400&q=80" },
+            { id: 615, brand: "SanDisk", name: "SanDisk Ultra 128GB MicroSD Memory Card", price: 649, oldPrice: 1899, tag: "65% OFF", cat: "sale", desc: "Up to 120MB/s speed, ideal for Android smartphones and tablets.", img: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=400&q=80" },
+            { id: 616, brand: "Zebronics", name: "Zebronics Bluetooth Soundbar (Surround Sound)", price: 9999, oldPrice: 24999, tag: "60% OFF", cat: "sale", desc: "Powerful home theatre soundbar with a dedicated subwoofer speaker.", img: "https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=400&q=80" },
+            { id: 617, brand: "Lenovo", name: "Lenovo IdeaPad Slim 3 Chromebook", price: 15999, oldPrice: 29990, tag: "46% OFF", cat: "sale", desc: "Lightweight laptop for daily browsing, online classes, and assignments.", img: "https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&w=400&q=80" },
+            { id: 618, brand: "Pigeon", name: "Pigeon Stainless Steel 3-Burner Gas Stove", price: 2199, oldPrice: 4995, tag: "56% OFF", cat: "sale", desc: "Toughened glass top stove with highly efficient brass burners.", img: "https://images.unsplash.com/photo-1527018601619-a508a2be00cd?auto=format&fit=crop&w=400&q=80" },
+            { id: 619, brand: "JBL", name: "JBL Flip 6 Waterproof Bluetooth Speaker", price: 9499, oldPrice: 13999, tag: "32% OFF", cat: "sale", desc: "IP67 waterproof outdoor speaker with deep bass and clear vocals.", img: "https://images.unsplash.com/photo-1612444530582-fc66183b16f7?auto=format&fit=crop&w=400&q=80" },
+            { id: 620, brand: "Amazon", name: "Amazon Echo Dot (5th Gen) Smart Speaker", price: 4499, oldPrice: 5499, tag: "18% OFF", cat: "sale", desc: "Smart speaker with Alexa assistant. Control your lights with voice.", img: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=400&q=80" },
+            { id: 621, brand: "Crucial", name: "Crucial 1TB Portable External SSD", price: 6899, oldPrice: 12500, tag: "45% OFF", cat: "sale", desc: "Ultra-fast pocket storage drive for laptops, mobile, and backup data.", img: "https://images.unsplash.com/photo-1628157582853-a796fa650a6a?auto=format&fit=crop&w=400&q=80" },
+            { id: 622, brand: "Realme", name: "Realme Buds Air 6 Wireless Earbuds", price: 4199, oldPrice: 6999, tag: "40% OFF", cat: "sale", desc: "Deep active noise cancellation with dynamic driver audio delivery.", img: "https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?auto=format&fit=crop&w=400&q=80" },
+            { id: 623, brand: "Morphy Richards", name: "Morphy Richards 24L Oven Toaster Griller", price: 6299, oldPrice: 9995, tag: "37% OFF", cat: "sale", desc: "Perfect OTG oven setup for baking cakes, grilling paneer, and roasting toast.", img: "https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?auto=format&fit=crop&w=400&q=80" },
+            { id: 624, brand: "Intel", name: "Intel 2TB NVMe M.2 Internal SSD", price: 9499, oldPrice: 16000, tag: "40% OFF", cat: "sale", desc: "Upgrades your PC or laptop boot speeds and app response loading.", img: "https://images.unsplash.com/photo-1563770660941-20978e870e26?auto=format&fit=crop&w=400&q=80" },
+            { id: 625, brand: "Syska", name: "Syska Smart LED Bulb (Pack of 4)", price: 1199, oldPrice: 2999, tag: "60% OFF", cat: "sale", desc: "Wi-Fi smart bulbs. Change up to 16 million colors with phone app.", img: "https://images.unsplash.com/photo-1550985616-10810253b84d?auto=format&fit=crop&w=400&q=80" },
+
+            // ==================== MOBILES & SMARTPHONES (25 Items) ====================
+            { id: 501, brand: "Apple", name: "Apple iPhone 17 Pro Max (256 GB)", price: 139900, oldPrice: 144900, tag: "New Launch", cat: "mobiles", desc: "Next-gen flagship powered by A19 Pro chip with premium titanium build.", img: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&w=400&q=80" },
+            { id: 502, brand: "Samsung", name: "Samsung Galaxy S26 Ultra 5G", price: 124999, oldPrice: 139999, tag: "Top Rated", cat: "mobiles", desc: "Featuring 200MP ultimate camera unit and integrated S-Pen stylus.", img: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&w=400&q=80" },
+            { id: 503, brand: "Google", name: "Google Pixel 10 Pro XL (5G)", price: 119900, oldPrice: 129900, tag: "Google AI", cat: "mobiles", desc: "Pure Android experience with next-generation local Google Magic AI features.", img: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=400&q=80" },
+            { id: 504, brand: "OnePlus", name: "OnePlus 14 Pro 5G (Signature Silver)", price: 64999, oldPrice: 69999, tag: "100W Charging", cat: "mobiles", desc: "Hasselblad mobile camera with ultra-smooth adaptive 120Hz display.", img: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=400&q=80" },
+            { id: 505, brand: "Xiaomi", name: "Xiaomi 16 Ultra 5G (12GB RAM)", price: 99999, oldPrice: 109999, tag: "Leica Camera", cat: "mobiles", desc: "Professional grade 1-inch sensor lens for unmatched daylight & night photography.", img: "https://images.unsplash.com/photo-1533228891704-7fceea35a1b1?auto=format&fit=crop&w=400&q=80" },
+            { id: 506, brand: "Vivo", name: "Vivo X110 Pro+ (256 GB, Blue)", price: 84999, oldPrice: 89999, tag: "Portrait Pro", cat: "mobiles", desc: "Zeiss coated optical layout premium setup for zero reflections portrait captures.", img: "https://images.unsplash.com/photo-1573148195900-7845dcb9b127?auto=format&fit=crop&w=400&q=80" },
+            { id: 507, brand: "Oppo", name: "Oppo Find X8 Ultra 5G", price: 79999, oldPrice: 85999, tag: "Dual Periscope", cat: "mobiles", desc: "Industry first dual-periscope telephoto zoom lens setups for far captures.", img: "https://images.unsplash.com/photo-1557180295-76eee20ae8aa?auto=format&fit=crop&w=400&q=80" },
+            { id: 508, brand: "Realme", name: "Realme GT 6 Pro (Speed Design)", price: 41999, oldPrice: 47999, tag: "Performance King", cat: "mobiles", desc: "Snapdragon flagship processor paired with high-efficiency liquid vapor cooling.", img: "https://images.unsplash.com/photo-1580910051074-3eb694886505?auto=format&fit=crop&w=400&q=80" },
+            { id: 509, brand: "Motorola", name: "Motorola Edge 60 Ultra (Vegan Leather)", price: 52999, oldPrice: 59999, tag: "Clean Android", cat: "mobiles", desc: "Zero bloatware software experience, 144Hz curved pOLED screen display.", img: "https://images.unsplash.com/photo-1557180295-76eee20ae8aa?auto=format&fit=crop&w=400&q=80" },
+            { id: 510, brand: "Apple", name: "Apple iPhone 16 Pro Max (256 GB)", price: 144900, oldPrice: 144900, tag: "Cinematic King", cat: "mobiles", desc: "Pro-grade studio video capture phone with massive battery runtime capacity.", img: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&w=400&q=80" },
+            { id: 511, brand: "Samsung", name: "Samsung Galaxy Z Fold 8 Premium 5G", price: 154999, oldPrice: 164999, tag: "Folding Display", cat: "mobiles", desc: "Unfolds into a full tablet workspace screen layout with advanced multi-tasking.", img: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&w=400&q=80" },
+            { id: 512, brand: "Samsung", name: "Samsung Galaxy Z Flip 8 5G", price: 94999, oldPrice: 99999, tag: "Compact Flip", cat: "mobiles", desc: "Folds down into your pocket easily. Large outer cover info screen window.", img: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=400&q=80" },
+            { id: 513, brand: "Asus", name: "Asus ROG Phone 10 Ultimate Edition", price: 89999, oldPrice: 95999, tag: "Extreme Gaming", cat: "mobiles", desc: "Hardcore mobile gaming phone with clip-on cooling and air-trigger buttons.", img: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=400&q=80" },
+            { id: 514, brand: "Nothing", name: "Nothing Phone (3) 5G (Dark Grey)", price: 39999, oldPrice: 44999, tag: "Glyph Lights", cat: "mobiles", desc: "Unique transparent back design with light notifications and clean interface.", img: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&w=400&q=80" },
+            { id: 515, brand: "Sony", name: "Sony Xperia 1 VII Pro Cinematic 5G", price: 104999, oldPrice: 109999, tag: "4K OLED Screen", cat: "mobiles", desc: "Native 21:9 movie style widescreen panel with pro recording adjustment options.", img: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=400&q=80" },
+            { id: 516, brand: "iQOO", name: "iQOO 14 Pro Racing Edition 5G", price: 54999, oldPrice: 59999, tag: "Max Frame Rate", cat: "mobiles", desc: "Highly optimized esports processor core minimizing gaming micro-stutters.", img: "https://images.unsplash.com/photo-1580910051074-3eb694886505?auto=format&fit=crop&w=400&q=80" },
+            { id: 517, brand: "Poco", name: "Poco F7 Pro HyperSpeed (256 GB)", price: 29999, oldPrice: 34999, tag: "Budget Gaming", cat: "mobiles", desc: "Unmatched performance score metrics relative to budget friendly pricing tier.", img: "https://images.unsplash.com/photo-1565630916779-e303be97b6f5?auto=format&fit=crop&w=400&q=80" },
+            { id: 518, brand: "Honor", name: "Honor Magic 7 Pro Silicon Core", price: 74999, oldPrice: 79999, tag: "Falcon Shutter", cat: "mobiles", desc: "Ultra fast shutter response speed freezes action instantly down to details.", img: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=400&q=80" },
+            { id: 519, brand: "Motorola", name: "Motorola Edge 60 Neo (Slim Blue)", price: 24999, oldPrice: 29999, tag: "Feather Light", cat: "mobiles", desc: "Incredibly thin profile chassis offering comprehensive IP68 water protection.", img: "https://images.unsplash.com/photo-1573148195900-7845dcb9b127?auto=format&fit=crop&w=400&q=80" },
+            { id: 520, brand: "Infinix", name: "Infinix GT 30 Pro Cyber Tech", price: 21999, oldPrice: 26999, tag: "LED Backplate", cat: "mobiles", desc: "Sci-fi mecha industrial outer design with smart rhythmic sound lights.", img: "https://images.unsplash.com/photo-1557180295-76eee20ae8aa?auto=format&fit=crop&w=400&q=80" },
+            { id: 521, brand: "Tecno", name: "Tecno Phantom V Fold 2 Matrix", price: 69999, oldPrice: 79999, tag: "Value Foldable", cat: "mobiles", desc: "Dual display multi-tasking phone layout at a highly disruptive price point.", img: "https://images.unsplash.com/photo-142751371-adc38448a05e?auto=format&fit=crop&w=400&q=80" },
+            { id: 522, brand: "Redmi", name: "Redmi Note 15 Pro Plus 5G", price: 31999, oldPrice: 36999, tag: "200MP Main", cat: "mobiles", desc: "Ultra high resolution camera sensor with multi-exposure lowlight filters.", img: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=400&q=80" },
+            { id: 523, brand: "OnePlus", name: "OnePlus Nord 5 Studio (128 GB)", price: 29999, oldPrice: 33999, tag: "Customer Pick", cat: "mobiles", desc: "Reliable daily smartphone balancing strong battery runtime and smooth usage.", img: "https://images.unsplash.com/photo-1533228891704-7fceea35a1b1?auto=format&fit=crop&w=400&q=80" },
+            { id: 524, brand: "Samsung", name: "Samsung Galaxy A57 mid-tier Pro", price: 36999, oldPrice: 41999, tag: "Knox Secured", cat: "mobiles", desc: "Enterprise security architecture isolating your personal info tracking logs.", img: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&w=400&q=80" },
+            { id: 525, brand: "Lava", name: "Lava Agni 4 5G (Iron Grey)", price: 23999, oldPrice: 28999, tag: "Made in India", cat: "mobiles", desc: "Proudly engineered locally for great network connectivity and clean OS.", img: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=400&q=80" },
+
+            // ==================== CONSUMER ELECTRONICS (25 Items) ====================
+            { id: 109, brand: "Volt", name: "Volt 65W GaN Multi-Port Wall Charger", price: 2199, oldPrice: 3499, tag: "Daily Needs", cat: "electronics", desc: "Gallium Nitride rapid-power brick charges laptops and mobile phones together.", img: "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80" },
+            { id: 110, brand: "ArmorX", name: "ArmorX Shockproof Magnetic Phone Case", price: 899, oldPrice: 1499, tag: "Top Selling", cat: "electronics", desc: "Military grade translucent protection bumper casing with strong magnetic attachment.", img: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=400&q=80" },
+            { id: 101, brand: "Sonic", name: "Sonic Wireless Active Noise Headphones", price: 14999, oldPrice: 19999, tag: "Premium Sound", cat: "electronics", desc: "Isolate outside environmental sound seamlessly with rich bass acoustics.", img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=400&q=80" },
+            { id: 102, brand: "Apple", name: "Apple iPad Air (M3 Powered Display)", price: 54990, oldPrice: 59900, tag: "Best Seller", cat: "electronics", desc: "Incredibly light performance slate canvas executing laptop operations smoothly.", img: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=400&q=80" },
+            { id: 103, brand: "Dell", name: "Dell UltraSharp 27-inch 4K Monitor", price: 32499, oldPrice: 41000, tag: "Pro Screen", cat: "electronics", desc: "Stunning professional screen with absolute color accuracy for editors and designers.", img: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=400&q=80" },
+            { id: 104, brand: "Bose", name: "Bose QuietComfort Wireless Earbuds", price: 22999, oldPrice: 25900, tag: "Top Choice", cat: "electronics", desc: "Premium custom ear fit adapters blocking dynamic environmental noises.", img: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=400&q=80" },
+            { id: 105, brand: "Sony", name: "Sony PlayStation 5 Pro Console (Slim)", price: 54999, oldPrice: 54999, tag: "Pure Gaming", cat: "electronics", desc: "Next generation high frame rendering gaming engine with ray tracing capabilities.", img: "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&w=400&q=80" },
+            { id: 106, brand: "Seagate", name: "Seagate One Touch 2TB External Hard Drive", price: 5499, oldPrice: 7999, tag: "Data Safe", cat: "electronics", desc: "Secure password protection layer safely archiving dense file systems.", img: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=400&q=80" },
+            { id: 107, brand: "Keychron", name: "Keychron K2 Wireless Mechanical Keyboard", price: 7199, oldPrice: 9999, tag: "Hot Pick", cat: "electronics", desc: "Highly satisfying click key feedback loops built for endless typing workflows.", img: "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?auto=format&fit=crop&w=400&q=80" },
+            { id: 108, brand: "GoPro", name: "GoPro Hero 14 Action Camera Rig", price: 38499, oldPrice: 44500, tag: "Action Ready", cat: "electronics", desc: "Extreme action stabilization processing crisp shaky-free videos outdoors.", img: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=400&q=80" },
+            { id: 111, brand: "Anker", name: "Anker 7-in-1 Type-C Multi Adapter Hub", price: 2999, oldPrice: 4999, tag: "Alloy Build", cat: "electronics", desc: "Expands your laptop connectivity framework supporting rapid data transfers.", img: "https://images.unsplash.com/photo-1468495244123-6c6c332eeece?auto=format&fit=crop&w=400&q=80" },
+            { id: 112, brand: "Razer", name: "Razer DeathAdder Wired Gaming Mouse", price: 1499, oldPrice: 2999, tag: "High Tracking", cat: "electronics", desc: "Ergonomic comfortable design body tracking swift click response rates.", img: "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?auto=format&fit=crop&w=400&q=80" },
+            { id: 113, brand: "Sennheiser", name: "Sennheiser HD 599 Open-Back Studio Headphones", price: 10999, oldPrice: 15990, tag: "Studio Core", cat: "electronics", desc: "Natural balanced spatial acoustics perfect for audio mastering and testing.", img: "https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=400&q=80" },
+            { id: 114, brand: "Elgato", name: "Elgato Stream Deck MK.2 Control Dock", price: 12499, oldPrice: 15999, tag: "15 Macro Keys", cat: "electronics", desc: "Custom visual shortcut setup launcher optimizing live recording flows.", img: "https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&w=400&q=80" },
+            { id: 115, brand: "Yeti", name: "Blue Yeti Professional USB Microphone", price: 9999, oldPrice: 13999, tag: "Podcast King", cat: "electronics", desc: "Tri-capsule audio array records crystal clear sound for calls and videos.", img: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=400&q=80" },
+            { id: 116, brand: "TP-Link", name: "TP-Link Archer AX73 Smart WiFi 6 Router", price: 7699, oldPrice: 11999, tag: "High Speed", cat: "electronics", desc: "Handles multi-device bandwidth demands across smart homes seamlessly.", img: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=400&q=80" },
+            { id: 117, brand: "Wacom", name: "Wacom Intuos Medium Digital Graphic Tablet", price: 7499, oldPrice: 9999, tag: "Design Pad", cat: "electronics", desc: "Highly accurate tracking layout surface translates sketching lines cleanly.", img: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=400&q=80" },
+            { id: 118, brand: "HyperX", name: "HyperX QuadCast S Premium RGB Mic", price: 11499, oldPrice: 14990, tag: "Gaming Mic", cat: "electronics", desc: "Anti-vibration mechanical shock isolation mount tracking zero bumps.", img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=400&q=80" },
+            { id: 119, brand: "DJI", name: "DJI Osmo Mobile 6 Smartphone Gimbal", price: 11999, oldPrice: 14999, tag: "3-Axis Steady", cat: "electronics", desc: "Three-axis mechanical tracking stabilizer providing cinema steady vlogging updates.", img: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=400&q=80" },
+            { id: 120, brand: "Shure", name: "Shure SE215 Sound Isolating Earphones", price: 8499, oldPrice: 10500, tag: "Vocal Check", cat: "electronics", desc: "Tight physical acoustic sealing modules preventing outer frequency interference.", img: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=400&q=80" },
+            { id: 121, brand: "Amazon", name: "Amazon Kindle Paperwhite (Gen 12 Reader)", price: 13999, oldPrice: 14999, tag: "Reading Ink", cat: "electronics", desc: "Glare-free paper-like screen module preventing focus fatigue during long reads.", img: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=400&q=80" },
+            { id: 122, brand: "Belkin", name: "Belkin 3-in-1 Magnetic Charging Dock", price: 7999, oldPrice: 11999, tag: "Desk Dock", cat: "electronics", desc: "Premium luxury layout rapid charging stand for phone and accessories simultaneously.", img: "https://images.unsplash.com/photo-1622445262465-2481c4574875?auto=format&fit=crop&w=400&q=80" },
+            { id: 123, brand: "Corsair", name: "Corsair Vengeance LPX 16GB Desktop RAM", price: 3499, oldPrice: 5999, tag: "PC Parts", cat: "electronics", desc: "High efficiency thermal alloy spreading running system operations smoothly.", img: "https://images.unsplash.com/photo-1563770660941-20978e870e26?auto=format&fit=crop&w=400&q=80" },
+            { id: 124, brand: "Nintendo", name: "Nintendo Switch OLED Gaming Console", price: 27499, oldPrice: 32999, tag: "Handheld Fun", cat: "electronics", desc: "Beautiful self-lighting vibrant panel format handling flexible gaming loops.", img: "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&w=400&q=80" },
+            { id: 125, brand: "SteelSeries", name: "SteelSeries Apex 7 Mechanical Smart Board", price: 14999, oldPrice: 18999, tag: "OLED Screen", cat: "electronics", desc: "Tactile gaming keyboard with integrated miniature diagnostics status display.", img: "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?auto=format&fit=crop&w=400&q=80" },
+
+            // ==================== APPAREL & WARDROBE (25 Items) ====================
+            { id: 201, brand: "DenimCo", name: "Classic Men's Vintage Indigo Denim Jacket", price: 2999, oldPrice: 4999, tag: "Must Have", cat: "fashion", desc: "Heavyweight robust cotton weave built for rugged year-round longevity.", img: "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?auto=format&fit=crop&w=400&q=80" },
+            { id: 202, brand: "Zara", name: "Zara Tailored Men's Winter Trench Coat", price: 7999, oldPrice: 11990, tag: "Top Styling", cat: "fashion", desc: "Exquisite drapes wind protective textile profile structuring clean formal outfits.", img: "https://images.unsplash.com/photo-1544022613-e87ca75a784a?auto=format&fit=crop&w=400&q=80" },
+            { id: 203, brand: "Nike", name: "Nike Air Max Sports Running Shoes", price: 6795, oldPrice: 7995, tag: "Comfy Active", cat: "fashion", desc: "Deep impact cushioning loops maximizing physical speed responses inside training.", img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=400&q=80" },
+            { id: 204, brand: "Adidas", name: "Adidas Tiro Athletic Fit Track Pants", price: 2199, oldPrice: 2999, tag: "Gym Wear", cat: "fashion", desc: "Moisture-wicking mesh fibers maintaining a cool relaxed dry lower framework.", img: "https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=400&q=80" },
+            { id: 205, brand: "Levi's", name: "Levi's 511 Slim Fit Stretchable Jeans", price: 2499, oldPrice: 3999, tag: "Best Seller", cat: "fashion", desc: "Timeless classic blue wash contouring comfortably through daily motion demands.", img: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=400&q=80" },
+            { id: 206, brand: "Puma", name: "Puma Classic Suede Casual Sneakers", price: 4499, oldPrice: 6999, tag: "Retro Look", cat: "fashion", desc: "Soft textured heritage material casing framing stylish retro lifestyle steps.", img: "https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=400&q=80" },
+            { id: 207, brand: "Tommy", name: "Tommy Hilfiger Crisp Cotton Formal Shirt", price: 3899, oldPrice: 4999, tag: "Office Look", cat: "fashion", desc: "Premium crisp cotton yarns pristine for board meeting presentation days.", img: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=400&q=80" },
+            { id: 208, brand: "Ray-Ban", name: "Ray-Ban Aviator Classic UV Sunglasses", price: 8299, oldPrice: 9990, tag: "Eye Safety", cat: "fashion", desc: "Tempered crystal glass assemblies delivering high grade physical optical defense lines.", img: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=400&q=80" },
+            { id: 209, brand: "FabIndia", name: "FabIndia Pure Khadi Handwoven Men's Kurta", price: 1699, oldPrice: 2499, tag: "Ethnic Wear", cat: "fashion", desc: "Highly breathable authentic home-spun local textile matching festival schedules.", img: "https://images.unsplash.com/photo-1647891938250-754ad796f64a?auto=format&fit=crop&w=400&q=80" },
+            { id: 210, brand: "H&M", name: "H&M Casual Warm Knitted Sweatshirt", price: 1499, oldPrice: 2299, tag: "Winter Special", cat: "fashion", desc: "Voluminous cozy warm weave layout ensuring smooth comfortable thermal insulation.", img: "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=400&q=80" },
+            { id: 211, brand: "Solley", name: "Allen Solly Structured Regular Party Blazer", price: 4299, oldPrice: 5999, tag: "Groomed Fit", cat: "fashion", desc: "Sharp padded contour shoulder frame lines constructing business casual outfits.", img: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=400&q=80" },
+            { id: 212, brand: "Calvin", name: "Calvin Klein Solid Plain Crew Neck Tee", price: 2799, oldPrice: 3999, tag: "Luxury Tee", cat: "fashion", desc: "Long staple extra soft cotton base structure surviving repeated detergent scrubs.", img: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=400&q=80" },
+            { id: 213, brand: "Casio", name: "Casio G-Shock Rugged Sports Watch", price: 8995, oldPrice: 11995, tag: "Tough Build", cat: "fashion", desc: "Resin armored protective case structure deflecting extreme physical accidental hits easily.", img: "https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?auto=format&fit=crop&w=400&q=80" },
+            { id: 214, brand: "Titan", name: "Titan Chronograph Stainless Steel Watch", price: 6495, oldPrice: 7995, tag: "Classic Choice", cat: "fashion", desc: "Elegant metallic multi-dial timing tracking modules complementing premium formal wear.", img: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&w=400&q=80" },
+            { id: 215, brand: "Woodland", name: "Woodland Heavy Grip Waterproof Trekking Boots", price: 3995, oldPrice: 5495, tag: "Trekking Special", cat: "fashion", desc: "Deep traction rubber friction block soles built to handle muddy mountain tracks.", img: "https://images.unsplash.com/photo-1520639888713-7851133b1ed0?auto=format&fit=crop&w=400&q=80" },
+            { id: 216, brand: "Jack & Jones", name: "Jack & Jones Loose Oversized Street Hoodie", price: 1999, oldPrice: 3499, tag: "Trendy Print", cat: "fashion", desc: "Thick fleece interior layers displaying dynamic typographic modern design art.", img: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=400&q=80" },
+            { id: 217, brand: "Bata", name: "Bata Genuine Black Leather Derby Shoes", price: 1799, oldPrice: 2499, tag: "Office Comfort", cat: "fashion", desc: "Integrated soft memory foam cushioning blocks saving feet fatigue all day long.", img: "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=400&q=80" },
+            { id: 218, brand: "Uniqlo", name: "Uniqlo Ultra Light Down Travel Vest", price: 3990, oldPrice: 4990, tag: "Light Thermal", cat: "fashion", desc: "Genuine fine feather filling packing down cleanly into small storage pouches.", img: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=400&q=80" },
+            { id: 219, brand: "Fastrack", name: "Fastrack Active Square Gym Sunglasses", price: 899, oldPrice: 1499, tag: "Sporty Style", cat: "fashion", desc: "Flexible impact resistant polymer frame setups sitting firm during heavy workouts.", img: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=400&q=80" },
+            { id: 220, brand: "USPA", name: "U.S. Polo Assn. Casual Pique Polo Shirt", price: 1599, oldPrice: 2399, tag: "Smart Casual", cat: "fashion", desc: "Breathable textured mesh grid layout proudly flaunting authentic brand markings.", img: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=400&q=80" },
+            { id: 221, brand: "Wildcraft", name: "Wildcraft 45L Heavy Camp Rucksack Bag", price: 2199, oldPrice: 3299, tag: "Travel Pack", cat: "fashion", desc: "Reinforced load bearing nylon stitch grids holding vast travel equipment profiles.", img: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=400&q=80" },
+            { id: 222, brand: "Manyavar", name: "Manyavar Festive Silk Blend Groom Sherwani", price: 12999, oldPrice: 15999, tag: "Wedding Ready", cat: "fashion", desc: "Exquisite traditional thread embroidery loops defining heritage elegance setups.", img: "https://images.unsplash.com/photo-1647891938250-754ad796f64a?auto=format&fit=crop&w=400&q=80" },
+            { id: 223, brand: "Wrangler", name: "Wrangler Multi Pocket Cotton Cargo Pants", price: 1999, oldPrice: 2999, tag: "Utility Wear", cat: "fashion", desc: "Heavy tactical double-stitch pocket assemblies built for heavy active journeys.", img: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=400&q=80" },
+            { id: 224, brand: "Crocs", name: "Crocs Unisex Adjustable Comfort Clogs", price: 2495, oldPrice: 2995, tag: "Waterproof Slip", cat: "fashion", desc: "Fully molded waterproof eva foam structures ensuring zero slip damp foot beds.", img: "https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=400&q=80" },
+            { id: 225, brand: "Peter", name: "Peter England Formal Necktie & Pin Combo", price: 799, oldPrice: 1299, tag: "Formal Gift", cat: "fashion", desc: "Fine silk looks geometric visual templates making shirts look instantly professional.", img: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=400&q=80" },
+
+            // ==================== KITCHEN & FURNITURE (25 Items) ====================
+            { id: 301, brand: "Caffe", name: "Caffe 15-Bar Semi-Automatic Espresso Machine", price: 19800, oldPrice: 24999, tag: "Cafe at Home", cat: "home", desc: "High pressure milk steaming pipe layout producing amazing coffee drinks easily.", img: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=400&q=80" },
+            { id: 302, brand: "Wakefit", name: "Wakefit Orthopedic Queen Size Memory Foam Mattress", price: 11499, oldPrice: 14999, tag: "Back Care", cat: "home", desc: "Body adaptive foam structural setup giving peaceful posture support layers.", img: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=400&q=80" },
+            { id: 303, brand: "Prestige", name: "Prestige Sleek Induction Cooktop Hub", price: 2899, oldPrice: 4295, tag: "Auto Heat", cat: "home", desc: "Microcrystal glass top panels providing fast automated heat adjustments cleanly.", img: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=400&q=80" },
+            { id: 304, brand: "Kent", name: "Kent Mineral RO Ultra Water Purifier", price: 14249, oldPrice: 19500, tag: "Pure Water", cat: "home", desc: "Advanced carbon multi-stage filtration setups removing micro-impurities safely.", img: "https://images.unsplash.com/photo-1608535002897-27b2aa592456?auto=format&fit=crop&w=400&q=80" },
+            { id: 305, brand: "Bajaj", name: "Bajaj Splendore 3-Litre Instant Bathroom Geyser", price: 3199, oldPrice: 5590, tag: "Fast Heating", cat: "home", desc: "Heavy pure copper heating rod loops handling high pipeline water pressure maps.", img: "https://images.unsplash.com/photo-1585338107529-13afc5f02586?auto=format&fit=crop&w=400&q=80" },
+            { id: 306, brand: "Godrej", name: "Godrej Interio Ergonomic High-Back Office Chair", price: 8499, oldPrice: 12500, tag: "Spine Care", cat: "home", desc: "Adjustable back tilt mesh frame modules preventing sitting stress on work desks.", img: "https://images.unsplash.com/photo-1505797149-43b0069ec26b?auto=format&fit=crop&w=400&q=80" },
+            { id: 307, brand: "Sujata", name: "Sujata Powermatic 900W Mixer Grinder Juice", price: 5899, oldPrice: 7300, tag: "Heavy Motor", cat: "home", desc: "High-speed heavy motor spinning rods grinding tough spices into paste smoothly.", img: "https://images.unsplash.com/photo-1581646733703-90097f065d21?auto=format&fit=crop&w=400&q=80" },
+            { id: 308, brand: "Hawkins", name: "Hawkins Futura Hard Anodized Pressure Cooker", price: 3125, oldPrice: 3650, tag: "Thick Base", cat: "home", desc: "Sturdy non-reactive surface materials distributing quick thermal heat grids uniformly.", img: "https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?auto=format&fit=crop&w=400&q=80" },
+            { id: 309, brand: "Sleepwell", name: "Sleepwell Dual Reversible Foam Sleeping Pillow", price: 899, oldPrice: 1499, tag: "Soft Support", cat: "home", desc: "Fluffy responsive foam filaments protecting sleeping head alignments all night.", img: "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?auto=format&fit=crop&w=400&q=80" },
+            { id: 310, brand: "Milton", name: "Milton Thermosteel Vacuum Hot/Cold Flask (1.5L)", price: 1249, oldPrice: 1695, tag: "Temp Lock", cat: "home", desc: "Double wall steel structures preserving water temperatures securely for 24 hours.", img: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=400&q=80" },
+            { id: 311, brand: "Nilkamal", name: "Nilkamal 4-Tier Heavy Plastic Storage Cabinet", price: 3499, oldPrice: 4999, tag: "Easy Organizer", cat: "home", desc: "Light sturdy home polymer shelves storing garments or tools cleanly.", img: "https://images.unsplash.com/photo-1595428774223-ef52624120d2?auto=format&fit=crop&w=400&q=80" },
+            { id: 312, brand: "Wipro", name: "Wipro Smart LED Tube Light (16W RGB)", price: 699, oldPrice: 1499, tag: "App Control", cat: "home", desc: "Vibrant ambient colors linking directly to home wireless automation networks.", img: "https://images.unsplash.com/photo-1565814636199-ae8133055c1c?auto=format&fit=crop&w=400&q=80" },
+            { id: 313, brand: "Forbes", name: "Eureka Forbes Deep Suction Vacuum Cleaner", price: 7499, oldPrice: 9999, tag: "Deep Clean", cat: "home", desc: "High powered airflow tracks extracting heavy embedded dust loops out of carpets.", img: "https://images.unsplash.com/photo-1558317374-067fb5f30001?auto=format&fit=crop&w=400&q=80" },
+            { id: 314, brand: "GreenSoul", name: "Green Soul Monster Ergonomic Gaming Throne", price: 16499, oldPrice: 22999, tag: "Adjustable Arm", cat: "home", desc: "Heavy structural skeletal cushion setups assisting long hours posture work setups safely.", img: "https://images.unsplash.com/photo-1598550476439-6847785fce6e?auto=format&fit=crop&w=400&q=80" },
+            { id: 315, brand: "Usha", name: "Usha Striker Aerodynamic 1200mm Ceiling Fan", price: 3299, oldPrice: 4595, tag: "Anti-Dust Paint", cat: "home", desc: "Specially shaped wide blade units cutting large air volumes silently around rooms.", img: "https://images.unsplash.com/photo-1618944847023-38aaffcb6690?auto=format&fit=crop&w=400&q=80" },
+            { id: 316, brand: "Wonderchef", name: "Wonderchef Nutri-Blend Compact Bullet Mixer", price: 2999, oldPrice: 4999, tag: "Smoothie Maker", cat: "home", desc: "High speed cyclone steel blades crushing raw ingredients down instantly.", img: "https://images.unsplash.com/photo-1578643463396-0997cb5328c1?auto=format&fit=crop&w=400&q=80" },
+            { id: 317, brand: "Borosil", name: "Borosil Microwave Safe Premium Glass Cup Set", price: 499, oldPrice: 720, tag: "Tough Glass", cat: "home", desc: "Thick borosilicate structure managing sudden heating temperature jumps smoothly.", img: "https://images.unsplash.com/photo-1517256064527-09c53b2d0c6b?auto=format&fit=crop&w=400&q=80" },
+            { id: 318, brand: "Crompton", name: "Crompton Arno Neo 15L Storage Boiler Geyser", price: 5899, oldPrice: 9450, tag: "5-Star Energy", cat: "home", desc: "Thick core insulation shell trapping heat scores inside water tanks for long hours.", img: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=400&q=80" },
+            { id: 319, brand: "Solimo", name: "Solimo Solid Sheesham Wood Coffee Table", price: 4999, oldPrice: 8999, tag: "Pure Timber", cat: "home", desc: "Sturdy structural timber construction highlighting natural premium wood grain marks.", img: "https://images.unsplash.com/photo-1533090161767-e6ffed986c88?auto=format&fit=crop&w=400&q=80" },
+            { id: 320, brand: "Voltas", name: "Voltas Beko 8 Place Setting Tabletop Dishwasher", price: 18499, oldPrice: 25990, tag: "High Temp Cook", cat: "home", desc: "70 degree intensive heat spray tracks fully dissolving oily curry spots off plates.", img: "https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?auto=format&fit=crop&w=400&q=80" },
+            { id: 321, brand: "Kurlon", name: "Kurlon Firm Natural Coir Support Mattress", price: 8999, oldPrice: 12000, tag: "Cool Coir", cat: "home", desc: "Airy coir weave layout facilitating continuous natural breathing sleep grids.", img: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=400&q=80" },
+            { id: 322, brand: "Livpure", name: "Livpure Glo RO+UV Smart Filter Plant", price: 8199, oldPrice: 11500, tag: "Mineral Guard", cat: "home", desc: "Post filtration balancing modules restoring drinking water taste levels cleanly.", img: "https://images.unsplash.com/photo-1585771724684-38269d6639fd?auto=format&fit=crop&w=400&q=80" },
+            { id: 323, brand: "HomeCentre", name: "Home Centre Velvet 3-Seater Living Room Sofa", price: 21999, oldPrice: 34999, tag: "Luxury Hall", cat: "home", desc: "High density base sponge structures adding ultimate premium comfort sets.", img: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=400&q=80" },
+            { id: 324, brand: "Prestige", name: "Prestige Hand Milk Frother & Whisk", price: 1199, oldPrice: 1895, tag: "Easy Whisk", cat: "home", desc: "Ergonomic modular spinning stick mixing morning creams or baking mixes rapidly.", img: "https://images.unsplash.com/photo-1578643463396-0997cb5328c1?auto=format&fit=crop&w=400&q=80" },
+            { id: 325, brand: "Basics", name: "AmazonBasics Soft Microfiber Double Bedsheet", price: 649, oldPrice: 1299, tag: "Skin Friendly", cat: "home", desc: "Very light fine thread counts providing premium soft sleeping textures cleanly.", img: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=400&q=80" },
+
+            // ==================== DAILY ESSENTIAL GROCERIES (25 Items) ====================
+            { id: 401, brand: "Nectar", name: "Pure Unpasteurized Wild Forest Honey (1 kg)", price: 650, oldPrice: 850, tag: "100% Organic", cat: "grocery", desc: "Natural sweet collection from single origin forests without heavy corn syrup.", img: "https://images.unsplash.com/photo-1471193945509-9ad0617afabf?auto=format&fit=crop&w=400&q=80" },
+            { id: 402, brand: "Fortune", name: "Fortune Kachi Ghani Pure Mustard Oil (5L)", price: 795, oldPrice: 950, tag: "Cold Pressed", cat: "grocery", desc: "Traditional pungent crushing process saving important health antioxidant fields.", img: "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=400&q=80" },
+            { id: 403, brand: "Daawat", name: "Daawat Rozana Long Grain Basmati Rice (5kg)", price: 425, oldPrice: 550, tag: "Aged Grain", cat: "grocery", desc: "Super fragrant extra-long fluff expansion enhancing your lunch meals.", img: "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=400&q=80" },
+            { id: 404, brand: "Tata", name: "Tata Iodized Vacuum Evaporated Salt (1kg)", price: 28, oldPrice: 30, tag: "Kitchen Staple", cat: "grocery", desc: "Standard double purified cooking crystal supplying important mineral values daily.", img: "https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=400&q=80" },
+            { id: 405, brand: "Catch", name: "Catch Natural Curcumin Turmeric Powder (500g)", price: 145, oldPrice: 190, tag: "Pure Haldi", cat: "grocery", desc: "Rich golden spice dust ground cleanly from quality roots without synthetic color.", img: "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=400&q=80" },
+            { id: 406, brand: "Aashirvaad", name: "Aashirvaad Shudh Chakki Whole Wheat Atta (10kg)", price: 460, oldPrice: 520, tag: "100% Atta", cat: "grocery", desc: "Complete natural bran retention making soft high-fiber rotis every single day.", img: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=400&q=80" },
+            { id: 407, brand: "Amul", name: "Amul Pure Vedic Cow Ghee Tin (1L)", price: 690, oldPrice: 750, tag: "Danedar Ghee", cat: "grocery", desc: "Rich clarified butter aroma crucial for cooking delicious local dal and paranthas.", img: "https://images.unsplash.com/photo-1608797178974-15b35a61d121?auto=format&fit=crop&w=400&q=80" },
+            { id: 408, brand: "Surf", name: "Surf Excel Easy Wash Detergent Powder (5kg)", price: 620, oldPrice: 750, tag: "Stain Buster", cat: "grocery", desc: "Fast multi-enzyme formula pulling tough mud particles safely off clothes.", img: "https://images.unsplash.com/photo-1607344645866-009c320c5ab8?auto=format&fit=crop&w=400&q=80" },
+            { id: 409, brand: "Nescafe", name: "Nescafe Classic Premium Instant Coffee (200g)", price: 385, oldPrice: 425, tag: "Morning Refresh", cat: "grocery", desc: "Perfect blend of roasted coffee beans delivering clean energetic wake tracking.", img: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=400&q=80" },
+            { id: 410, brand: "Taj", name: "Taj Mahal Premium CTC Loose Black Tea (1kg)", price: 470, oldPrice: 550, tag: "Best Chai", cat: "grocery", desc: "Selected strong leaf blends producing full sensory liquor color arrays.", img: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=400&q=80" },
+            { id: 411, brand: "Saffola", name: "Saffola Gold Blended Healthy Cooking Oil (5L)", price: 840, oldPrice: 995, tag: "Low Absorb", cat: "grocery", desc: "Specially formulated multi-source seed oil minimizing grease logs in fry items.", img: "https://images.unsplash.com/photo-1540962351504-03099e0a754b?auto=format&fit=crop&w=400&q=80" },
+            { id: 412, brand: "Kellogg's", name: "Kellogg's Original Corn Flakes Family Pack", price: 399, oldPrice: 475, tag: "Iron Rich", cat: "grocery", desc: "Crisp golden breakfast flakes providing easy morning nutrition loops for kids.", img: "https://images.unsplash.com/photo-1595231712325-9fecd20a006c?auto=format&fit=crop&w=400&q=80" },
+            { id: 413, brand: "Sampann", name: "Tata Sampann Unpolished Protein Toor Dal (1kg)", price: 185, oldPrice: 220, tag: "Natural Dal", cat: "grocery", desc: "Zero polish fields saving core organic plant amino protein building blocks.", img: "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=400&q=80" },
+            { id: 414, brand: "Dettol", name: "Dettol Antiseptic Disinfectant Liquid (1L)", price: 370, oldPrice: 415, tag: "Germ Shield", cat: "grocery", desc: "Trusted sanitization defense formula protecting family bathing or cleaning grids.", img: "https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?auto=format&fit=crop&w=400&q=80" },
+            { id: 415, brand: "Happilo", name: "Happilo Premium California Whole Almonds (500g)", price: 449, oldPrice: 650, tag: "Healthy Nuts", cat: "grocery", desc: "Crunchy hand selected almond kernels packed filled with raw vitamin E assets.", img: "https://images.unsplash.com/photo-1596547609652-9cf5d8d76921?auto=format&fit=crop&w=400&q=80" },
+            { id: 416, brand: "Maggi", name: "Maggi 2-Minute Masala Noodles (12-in-1 Pack)", price: 168, oldPrice: 180, tag: "Snack King", cat: "grocery", desc: "The legendary lightning fast hot spice meal block loved across generations.", img: "https://images.unsplash.com/photo-1612966608997-30d54f58e372?auto=format&fit=crop&w=400&q=80" },
+            { id: 417, brand: "Cadbury", name: "Cadbury Celebrations Chocolate Festive Gift Box", price: 249, oldPrice: 300, tag: "Sweet Gift", cat: "grocery", desc: "Assorted dairy milk varieties grouped nicely for sharing over holiday weeks.", img: "https://images.unsplash.com/photo-1548907040-4d42b52145ca?auto=format&fit=crop&w=400&q=80" },
+            { id: 418, brand: "Lizol", name: "Lizol Citrus Floor Disinfectant Cleaner (2L)", price: 345, oldPrice: 399, tag: "Clean Floor", cat: "grocery", desc: "Deep cleaning solution killing 99.9% germs while emitting fresh citrus aroma.", img: "https://images.unsplash.com/photo-1607344645866-009c320c5ab8?auto=format&fit=crop&w=400&q=80" },
+            { id: 419, brand: "Colgate", name: "Colgate MaxFresh Red Mint Gel Paste (Pack of 3)", price: 270, oldPrice: 330, tag: "Fresh Breath", cat: "grocery", desc: "Intense cooling crystals inside maintaining excellent daily mouth cleanliness logs.", img: "https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?auto=format&fit=crop&w=400&q=80" },
+            { id: 420, brand: "Vim", name: "Vim Lemon Dishwash Liquid Gel Tub (2L)", price: 360, oldPrice: 410, tag: "Grease Cut", cat: "grocery", desc: "High surfactant power stripping tough oily marks away from metal cook cookware.", img: "https://images.unsplash.com/photo-1607344645866-009c320c5ab8?auto=format&fit=crop&w=400&q=80" },
+            { id: 421, brand: "Blinkit", name: "Home Heavy Plastic Garbage Bags (Pack of 60)", price: 199, oldPrice: 299, tag: "Thick Bags", cat: "grocery", desc: "Reinforced bottom leak prevention folds handling house kitchen trash easily.", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80" },
+            { id: 422, brand: "PaperBoat", name: "Paper Boat Alphonso Mango Fruit Drink (1L)", price: 99, oldPrice: 125, tag: "Real Taste", cat: "grocery", desc: "Thick sweet rich local pulp fruit juice capturing traditional summer profiles.", img: "https://images.unsplash.com/photo-1534353436294-0dbd4bdac845?auto=format&fit=crop&w=400&q=80" },
+            { id: 423, brand: "Real", name: "Real Mixed Fruit Wellness Juice Pack (1L)", price: 110, oldPrice: 135, tag: "Vitamin Power", cat: "grocery", desc: "Assembled multi-fruit nutrient extracts without heavy synthetic preservative elements.", img: "https://images.unsplash.com/photo-1534353436294-0dbd4bdac845?auto=format&fit=crop&w=400&q=80" },
+            { id: 424, brand: "Quaker", name: "Quaker Whole Grain Rolled Oats Balance Tin (1kg)", price: 225, oldPrice: 285, tag: "Healthy Diet", cat: "grocery", desc: "Sustained high-fiber breakfast flakes supporting excellent digestion tracks daily.", img: "https://images.unsplash.com/photo-1586444248902-2f64eddc13df?auto=format&fit=crop&w=400&q=80" },
+            { id: 425, brand: "Britannia", name: "Britannia Good Day Cashew Cookies Mega Pack", price: 120, oldPrice: 140, tag: "Snack Time", cat: "grocery", desc: "Rich butter baked crust surfaces containing authentic roasted nut fragments.", img: "https://images.unsplash.com/photo-1548907040-4d42b52145ca?auto=format&fit=crop&w=400&q=80" }
+        ];
+
+        // User Accounts Vault State Layer
+        let accountsLedger = JSON.parse(localStorage.getItem('shopcart_users_db')) || {};
+        let currentUser = null;
+        let orderLogs = [];
+
+        // Core Rendering System
+        function mountStore() {
+            const grids = ['sale-grid', 'mobiles-grid', 'electronics-grid', 'fashion-grid', 'home-grid', 'grocery-grid'];
+            grids.forEach(g => {
+                const target = document.getElementById(g);
+                if(target) target.innerHTML = '';
+            });
+
+            inventoryDatabase.forEach(item => {
+                const destination = document.getElementById(`${item.cat}-grid`);
+                if(!destination) return;
+
+                const isSale = item.cat === 'sale';
+                const cardClass = isSale ? 'product-card on-sale' : 'product-card';
+                const badgeClass = isSale ? 'badge-tag sale-badge' : 'badge-tag';
+                
+                const actionButton = (currentUser && currentUser.role === 'admin') 
+                    ? `<button class="btn-delete-admin" onclick="deleteProduct(${item.id})">Remove Product</button>`
+                    : `<button class="btn-add" onclick="pushItem(${item.id})">Add</button>`;
+
+                const element = document.createElement('div');
+                element.className = cardClass;
+                element.innerHTML = `
+                    <div class="img-wrapper">
+                        <span class="${badgeClass}">${item.tag}</span>
+                        <img src="${item.img}" alt="${item.name}" class="product-image" loading="lazy">
+                    </div>
+                    <div class="product-details">
+                        <div>
+                            <div class="product-brand">${item.brand}</div>
+                            <div class="product-name">${item.name}</div>
+                            <p class="product-desc">${item.desc}</p>
+                        </div>
+                        <div class="product-footer">
+                            <div class="price-container">
+                                <span class="product-price">₹${item.price.toLocaleString('en-IN')}</span>
+                                <span class="mr-strike">₹${item.oldPrice.toLocaleString('en-IN')}</span>
+                            </div>
+                            ${actionButton}
+                        </div>
+                    </div>
+                `;
+                destination.appendChild(element);
+            });
+            refreshBadge();
+            renderCartDrawer();
+            evaluateAdminLayout();
+        }
+
+        // Video Controller System Subroutines
+        function toggleVideoPlayback() {
+            const video = document.getElementById('promoVideo');
+            const btn = document.getElementById('videoPlayPauseBtn');
+            if (video.paused) {
+                video.play();
+                btn.textContent = "⏸";
+            } else {
+                video.pause();
+                btn.textContent = "▶";
+            }
+        }
+
+        // Authentication Tab Switch Engine
+        function switchAuthTab(targetTab) {
+            document.getElementById('tabLogin').classList.remove('active');
+            document.getElementById('tabRegister').classList.remove('active');
+            document.getElementById('loginFormView').classList.remove('active');
+            document.getElementById('registerFormView').classList.remove('active');
+
+            if (targetTab === 'login') {
+                document.getElementById('tabLogin').classList.add('active');
+                document.getElementById('loginFormView').classList.add('active');
+            } else {
+                document.getElementById('tabRegister').classList.add('active');
+                document.getElementById('registerFormView').classList.add('active');
+            }
+        }
+
+        const authModal = document.getElementById('authModal');
+        const authBtn = document.getElementById('authBtn');
+
+        authBtn.addEventListener('click', () => {
+            if (currentUser) {
+                if (confirm("Would you like to close your session and log out?")) {
+                    executeLogout();
+                }
+            } else {
+                switchAuthTab('login');
+                authModal.classList.add('active');
+            }
+        });
+
+        document.getElementById('closeModal').addEventListener('click', () => authModal.classList.remove('active'));
+
+        // Sign In Form Processing
+        document.getElementById('authLoginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value.trim();
+            const pass = document.getElementById('loginPassword').value;
+
+            if (email === "admin@shopcart.in" && pass === "admin123") {
+                currentUser = { name: "Sumit (Admin)", email: email, role: "admin" };
+                alert("Administrative secure operational clearance granted.");
+            } else if (accountsLedger[email] && accountsLedger[email].password === pass) {
+                currentUser = { name: accountsLedger[email].name, email: email, role: "customer" };
+                alert(`Welcome back, ${currentUser.name}! Authenticated successfully.`);
+            } else {
+                alert("Authentication mismatch. Verify credentials or register account profile.");
+                return;
+            }
+
+            authModal.classList.remove('active');
+            document.getElementById('authLoginForm').reset();
+            updateAuthNavigationUI();
+            mountStore();
+        });
+
+        // Registration Form Processing
+        document.getElementById('authRegisterForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const pass = document.getElementById('regPassword').value;
+
+            if (email === "admin@shopcart.in") {
+                alert("Protected system address string mapping constraint.");
+                return;
+            }
+
+            if (accountsLedger[email]) {
+                alert("Identity mapping already verified. Route to login window configuration.");
+                return;
+            }
+
+            accountsLedger[email] = { name: name, password: pass };
+            localStorage.setItem('shopcart_users_db', JSON.stringify(accountsLedger));
+            
+            alert("Profile asset registered successfully. You may log in now.");
+            document.getElementById('authRegisterForm').reset();
+            switchAuthTab('login');
+        });
+
+        function executeLogout() {
+            currentUser = null;
+            updateAuthNavigationUI();
+            mountStore();
+            alert("Session terminated securely.");
+        }
+
+        function updateAuthNavigationUI() {
+            if (currentUser) {
+                authBtn.textContent = currentUser.name;
+                authBtn.style.backgroundColor = "var(--accent)";
+                authBtn.style.color = "var(--primary)";
+            } else {
+                authBtn.textContent = "Sign In";
+                authBtn.style.backgroundColor = "transparent";
+                authBtn.style.color = "#38bdf8";
+            }
+        }
+
+        function evaluateAdminLayout() {
+            const panel = document.getElementById('adminPanel');
+            if (currentUser && currentUser.role === 'admin') {
+                panel.classList.add('visible');
+            } else {
+                panel.classList.remove('visible');
+            }
+        }
+
+        // Administrative Workspace Backend Logic
+        document.getElementById('adminAddProductForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const newProd = {
+                id: Date.now(),
+                brand: document.getElementById('admBrand').value,
+                name: document.getElementById('admName').value,
+                price: parseFloat(document.getElementById('admPrice').value),
+                oldPrice: parseFloat(document.getElementById('admOldPrice').value),
+                tag: document.getElementById('admTag').value,
+                cat: document.getElementById('admCat').value,
+                desc: document.getElementById('admDesc').value,
+                img: document.getElementById('admImg').value
+            };
+
+            inventoryDatabase.unshift(newProd);
+            localStorage.setItem('shopcart_inventory_v3', JSON.stringify(inventoryDatabase));
+            alert("New inventory object deployed successfully.");
+            document.getElementById('adminAddProductForm').reset();
+            mountStore();
+        });
+
+        function deleteProduct(id) {
+            if(confirm("Delete this product from the master database?")) {
+                inventoryDatabase = inventoryDatabase.filter(x => x.id !== id);
+                localStorage.setItem('shopcart_inventory_v3', JSON.stringify(inventoryDatabase));
+                mountStore();
+            }
+        }
+
+        // Cart State Management
+        let basket = JSON.parse(localStorage.getItem('shopcart_v2_storage')) || [];
+
+        function pushItem(id) {
+            const match = inventoryDatabase.find(x => x.id === id);
+            const existence = basket.find(x => x.id === id);
+
+            if(existence) {
+                existence.qty += 1;
+            } else {
+                basket.push({ 
+                    id: match.id, 
+                    name: match.name, 
+                    price: match.price, 
+                    img: match.img, 
+                    qty: 1 
+                });
+            }
+            saveState();
+            openCartDrawer();
+        }
+
+        function changeQuantity(id, change) {
+            const item = basket.find(x => x.id === id);
+            if(!item) return;
+            
+            item.qty += change;
+            if(item.qty <= 0) {
+                basket = basket.filter(x => x.id !== id);
+            }
+            saveState();
+        }
+
+        function removeBasketItem(id) {
+            basket = basket.filter(x => x.id !== id);
+            saveState();
+        }
+
+        function saveState() {
+            localStorage.setItem('shopcart_v2_storage', JSON.stringify(basket));
+            refreshBadge();
+            renderCartDrawer();
+        }
+
+        function refreshBadge() {
+            const count = basket.reduce((acc, obj) => acc + obj.qty, 0);
+            document.getElementById('cartBadge').textContent = count;
+        }
+
+        function renderCartDrawer() {
+            const container = document.getElementById('cartDrawerBody');
+            const subtotalText = document.getElementById('cartSubtotal');
+            
+            if(!container) return;
+            container.innerHTML = '';
+
+            if(basket.length === 0) {
+                container.innerHTML = '<div class="cart-empty-msg">Your shopping cart is empty.</div>';
+                subtotalText.textContent = "₹0";
+                return;
+            }
+
+            let calculatedSum = 0;
+            basket.forEach(item => {
+                calculatedSum += (item.price * item.qty);
+                const row = document.createElement('div');
+                row.className = 'cart-item';
+                row.innerHTML = `
+                    <img src="${item.img}" class="cart-item-img" alt="${item.name}">
+                    <div class="cart-item-details">
+                        <div class="cart-item-name">${item.name}</div>
+                        <div class="cart-item-price">₹${(item.price * item.qty).toLocaleString('en-IN')}</div>
+                    </div>
+                    <div class="cart-item-actions">
+                        <button class="qty-btn" onclick="changeQuantity(${item.id}, -1)">-</button>
+                        <span class="item-qty-val">${item.qty}</span>
+                        <button class="qty-btn" onclick="changeQuantity(${item.id}, 1)">+</button>
+                        <button class="remove-item" onclick="removeBasketItem(${item.id})">Remove</button>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+
+            subtotalText.textContent = `₹${calculatedSum.toLocaleString('en-IN')}`;
+        }
+
+        // Drawer Operations
+        const drawer = document.getElementById('cartDrawer');
+        const uiOverlay = document.getElementById('uiOverlay');
+        const checkoutModal = document.getElementById('checkoutModal');
+
+        function openCartDrawer() {
+            drawer.classList.add('active');
+            uiOverlay.classList.add('active');
+        }
+
+        function closeCartDrawer() {
+            drawer.classList.remove('active');
+            if(!checkoutModal.classList.contains('active')) {
+                uiOverlay.classList.remove('active');
+            }
+        }
+
+        function openCheckoutModal() {
+            if(basket.length === 0) {
+                alert("Your cart is empty!");
+                return;
+            }
+            closeCartDrawer();
+            checkoutModal.classList.add('active');
+            uiOverlay.classList.add('active');
+        }
+
+        function closeCheckoutModal() {
+            checkoutModal.classList.remove('active');
+            uiOverlay.classList.remove('active');
+        }
+
+        document.getElementById('cartToggleBtn').addEventListener('click', openCartDrawer);
+        document.getElementById('closeCartBtn').addEventListener('click', closeCartDrawer);
+        document.getElementById('closeCheckout').addEventListener('click', closeCheckoutModal);
+        uiOverlay.addEventListener('click', () => {
+            closeCartDrawer();
+            closeCheckoutModal();
+        });
+
+        // Checkout & Order Form Submission
+        document.getElementById('checkoutForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const orderPayload = {
+                orderId: "SC-" + Math.floor(100000 + Math.random() * 900000),
+                timestamp: new Date().toLocaleTimeString(),
+                customer: {
+                    name: document.getElementById('shipName').value,
+                    phone: document.getElementById('shipPhone').value
+                },
+                shippingAddress: {
+                    flatBuilding: document.getElementById('shipFlat').value,
+                    streetArea: document.getElementById('shipStreet').value,
+                    city: document.getElementById('shipCity').value,
+                    state: document.getElementById('shipState').value,
+                    pinCode: document.getElementById('shipPin').value
+                },
+                payment: {
+                    method: document.getElementById('paymentMethod').value,
+                    status: 'Authorized'
+                },
+                itemsCount: basket.reduce((acc, x) => acc + x.qty, 0),
+                totalAmount: basket.reduce((acc, x) => acc + (x.price * x.qty), 0)
+            };
+
+            orderLogs.unshift(orderPayload);
+            refreshAdminOrdersLogFeed();
+
+            alert(`Success! Order ${orderPayload.orderId} Placed.\nTotal: ₹${orderPayload.totalAmount.toLocaleString('en-IN')}`);
+            
+            basket = [];
+            saveState();
+            closeCheckoutModal();
+            document.getElementById('checkoutForm').reset();
+        });
+
+        function refreshAdminOrdersLogFeed() {
+            const feed = document.getElementById('adminOrdersFeed');
+            if(!feed) return;
+            feed.innerHTML = '';
+            
+            if(orderLogs.length === 0) {
+                feed.innerHTML = '<p style="color: #64748b; text-align: center; margin-top: 2rem;">No orders logged.</p>';
+                return;
+            }
+
+            orderLogs.forEach(o => {
+                const block = document.createElement('div');
+                block.className = 'order-log-item';
+                block.innerHTML = `
+                    <strong>ID: ${o.orderId}</strong> [${o.timestamp}]<br>
+                    <span>Client: ${o.customer.name} (${o.customer.phone})</span><br>
+                    <span>Items Count: ${o.itemsCount} Units | Value: <strong>₹${o.totalAmount.toLocaleString('en-IN')}</strong></span><br>
+                    <span style="font-size: 0.75rem; color: #64748b;">Dest: ${o.shippingAddress.city}, ${o.shippingAddress.state}</span>
+                `;
+                feed.appendChild(block);
+            });
+        }
+
+        window.onload = mountStore;
+    </script>
+</body>
+</html>
